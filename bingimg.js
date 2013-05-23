@@ -69,6 +69,7 @@ var req = http.request(options, function (res) {
             reqImage.end();
         }
         else {
+			console.log("Error");
         }
     });
 });
