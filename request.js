@@ -42,8 +42,8 @@ function imageReq(mkt){
 			
 			//console.log(fileName);;
 			
+			//TODO where should these file save in?
 			var file = fs.createWriteStream(fileName);
-			
 			
 			httpReq({
 				hostname:"www.bing.com",
