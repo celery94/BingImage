@@ -7,13 +7,13 @@ var $ = require('jquery').create();
 var fs = require('fs');
 
 var options = {
-    host: '10.97.4.18',
+    host: '***.***.***.***',
     port: 8080,
     path: 'http://www.bing.com',
     method: "Get",
     headers: {
         Host: "www.bing.com",
-        "Proxy-Authorization": "Basic " + new Buffer("cl1011" + ":" + "654321zZ").toString("base64")
+        "Proxy-Authorization": "Basic " + new Buffer("cl1011" + ":" + "********").toString("base64")
     }
 };
 
