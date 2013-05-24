@@ -1,4 +1,5 @@
 //TODO download every day's image in schedule
+//process timer & winser
 //TODO set download file to desktop image
 
 var req = require("./request");
@@ -6,11 +7,12 @@ var req = require("./request");
 var opt = {
     hostname: "www.bing.com",
     path: "/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=",
+    savefolder: "D:\\NodeJS\\App\\Image\\",
     proxyOpt: {
-        host: "***.***.***.***",
+        host: "******",
         port: 8080,
-        username: "***",
-        password: "***"
+        username: "******",
+        password: "******"
     }
 };
 
@@ -20,5 +22,5 @@ var arr = ["en-US", "zh-CN", "ja-JP", "en-AU", "en-UK", "de-DE", "en-NZ", "en-CA
 for (i = 0; i < arr.length; i++) {
     opt.mkt = arr[i];
     req.imgReq(opt);
-    //break;
+    break;
 }

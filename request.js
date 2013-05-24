@@ -4,11 +4,8 @@ var fs = require("fs");
 
 function httpReq(opt, proxyOpt) {
     var options = {
-        path: opt.path,
         method: "GET"
     };
-
-
 
     if (proxyOpt) {
         options.host = proxyOpt.host;
@@ -22,6 +19,7 @@ function httpReq(opt, proxyOpt) {
         options.headers = headers;
     } else {
         options.hostname = opt.hostname;
+        options.path = opt.path;
     }
 
     //console.log(options);
@@ -52,13 +50,19 @@ function imageReq(opt) {
         path: opt.path + opt.mkt,
         endhandler: function (jsonData) {
             var jsonObj = JSON.parse(jsonData);
-            var url = jsonObj.images[0].url;
+            var url = jsonObj.images[0].url.replace("1366x768", "1920x1200");
 
             var nameIndex = url.lastIndexOf("/");
             var fileName = url.substr(nameIndex + 1);
 
-            //TODO where should these file save in?
-            var file = fs.createWriteStream(fileName);
+            var filePath;
+            if (opt.savefolder) {
+                filePath = opt.savefolder + fileName;
+            } else {
+                filePath = fileName;    //Current folder
+            }
+
+            var file = fs.createWriteStream(filePath);
 
             httpReq({
                 hostname: opt.hostname,
