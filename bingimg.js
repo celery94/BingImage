@@ -55,21 +55,21 @@ var req = http.request(options, function (res) {
             var reqImage = http.request(options, function (resImage) {
                 console.log('Image STATUS: ' + res.statusCode);
 
-				var file = fs.createWriteStream("file.png");
+                var file = fs.createWriteStream("file.png");
                 resImage.on('data', function (chunk) {
                     file.write(chunk);
                 });
-				
+
                 resImage.on('end', function () {
-					file.end();
-                });		
+                    file.end();
+                });
 
             });
 
             reqImage.end();
         }
         else {
-			console.log("Error");
+            console.log("Error");
         }
     });
 });
