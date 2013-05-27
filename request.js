@@ -45,38 +45,53 @@ function httpReq(opt, proxyOpt) {
 };
 
 function imageReq(opt) {
-    httpReq({
-        hostname: opt.hostname,
-        path: opt.path + opt.mkt,
-        endhandler: function (jsonData) {
-            var jsonObj = JSON.parse(jsonData);
-            var url = jsonObj.images[0].url.replace("1366x768", "1920x1200");
+    opt.hostname = "www.bing.com";
+    opt.path = "/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=";
+    var mktArr = ["en-US", "zh-CN", "ja-JP", "en-AU", "en-UK", "de-DE", "en-NZ", "en-CA"];
 
-            var nameIndex = url.lastIndexOf("/");
-            var fileName = url.substr(nameIndex + 1);
+    for (i = 0; i < mktArr.length; i++) {
+        opt.mkt = mktArr[i];
 
-            var filePath;
-            if (opt.savefolder) {
-                filePath = opt.savefolder + fileName;
-            } else {
-                filePath = fileName;    //Current folder
-            }
+        httpReq({
+            hostname: opt.hostname,
+            path: opt.path + opt.mkt,
+            endhandler: function (jsonData) {
+                var jsonObj = JSON.parse(jsonData);
+                var url = jsonObj.images[0].url;
 
-            var file = fs.createWriteStream(filePath);
-
-            httpReq({
-                hostname: opt.hostname,
-                path: url,
-                datahandler: function (data) {
-                    file.write(data);
-                },
-                endhandler: function () {
-                    file.end();
-                    console.log(url + " Done!");
+                if (opt.isHD) {
+                    url = url.replace("1366x768", "1920x1200");
                 }
-            }, opt.proxyOpt);
-        }
-    }, opt.proxyOpt);
+
+                var nameIndex = url.lastIndexOf("/");
+
+                var date = new Date();
+                var namePrefix = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2) + " ";
+                var fileName = namePrefix + url.substr(nameIndex + 1);
+
+                var filePath;
+                if (opt.savefolder) {
+                    filePath = opt.savefolder + fileName;
+                } else {
+                    filePath = fileName; //Current folder
+                }
+
+                var file = fs.createWriteStream(filePath);
+
+                httpReq({
+                    hostname: opt.hostname,
+                    path: url,
+                    datahandler: function (data) {
+                        file.write(data);
+                    },
+                    endhandler: function () {
+                        file.end();
+                        console.log(url + " Done!");
+                    }
+                }, opt.proxyOpt);
+            }
+        }, opt.proxyOpt);
+    }
 };
 
 exports.imgReq = imageReq;
