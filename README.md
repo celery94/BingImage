@@ -1,4 +1,4 @@
 BingImage
 =========
 
-get bing images of current data
+Get current day bing images.
