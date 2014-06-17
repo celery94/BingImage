@@ -1,4 +1,4 @@
-BingImage
+Nodejs Bing Image 
 =========
 
-Get current day bing images.
+Get current day bing images by nodejs.
